@@ -1,0 +1,6 @@
+pygame
+
+#dev 
+rope
+black
+flake8
