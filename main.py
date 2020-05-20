@@ -1,5 +1,6 @@
 import pygame
 from timeit import default_timer as time
+from time import sleep
 
 from objects.lander import Lander as Shuttle
 
@@ -9,6 +10,7 @@ window = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Lunar Lander")
 
 lander = Shuttle()
+fps_target = 60
 
 running = True
 last = 0
@@ -24,10 +26,11 @@ while running:
             if event.key == pygame.K_SPACE:
                 lander.linear_A = (1000, 0)
 
-
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 lander.linear_A = (0, 0)
+
+
 
     window.fill((0, 0, 0))
 
@@ -36,6 +39,10 @@ while running:
 
     pygame.display.update()
 
-    # TODO: FPS limiter here
+    limiter_wait = True
+    while limiter_wait:
+        sleep(1 / 480)
+        if time() - now >= 1 / fps_target:
+            limiter_wait = False
     
     last = now
