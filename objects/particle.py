@@ -1,13 +1,34 @@
+import pygame
 from constants import WIDTH, HEIGHT
 import random
 from timeit import default_timer as time
+
+
+class ParticleSystem:
+    def __init__(self):
+        self.particles = []
+
+    def add_particles(self, particles):
+        self.particles.extend(particles)
+
+    def update(self, deltaT):
+        for p in self.particles:
+            p.update(deltaT)
+            if p.check_ttl():
+                self.particles.remove(p)
+
+    def draw(self, window: pygame.Surface):
+        [p.draw(window) for p in self.particles]
+
+    def __getitem__(self, item):
+        return self.particles[item]
 
 
 class Particle:
     def __init__(
         self,
         position=(0, 0),
-        speed=((0, 1), (0, 1)),
+        speed=((-100, 100), (-100, 100)),
         color_range=((0, 255), (0, 255), (0, 255)),
         ttl=1,
     ):
@@ -24,8 +45,16 @@ class Particle:
         self.ttl = ttl
         self.start = time()
 
-    def update(self):
-        pass
+    def update(self, deltaT):
+        px, py = self.position
+        vx, vy = self.speed
+        self.position = (px + vx * deltaT, py + vy * deltaT)
 
-    def draw(self):
-        pass
+    def check_ttl(self):
+        if time() - self.start > self.ttl:
+            return True
+        else:
+            return False
+
+    def draw(self, window: pygame.Surface):
+        pygame.draw.rect(window, self.color, (self.position, (20, 20)))
