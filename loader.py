@@ -24,7 +24,7 @@ class Loader:
     def load(self):
         threads = []
         threads.extend([
-            worker(pygame.image.load,"assets/lander.png","lander")
+            worker(pygame.image.load,"assets/lander.png","lander"),
         ])
         [t.start() for t in threads]
         [t.join() for t in threads]

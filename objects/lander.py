@@ -4,7 +4,7 @@ import generic.sprite
 from objects.particle import Particle, ParticleSystem
 
 
-class Lander(generic.sprite.Sprite):
+class Lander(generic.sprite.DynamicSprite):
     def __init__(self, texture, world):
         self._texture = pygame.transform.rotozoom(texture, 180, 0.25)
         self.thrusting = False
@@ -34,7 +34,13 @@ class Lander(generic.sprite.Sprite):
         self._particles.update(deltaT)
         if self.thrusting:
             self._particles.add_particles(
-                Particle(center, ((x - 200, x + 200), (y - 200, y + 200)))
+                # 255, 217, 64
+                # 122, 122, 122
+                Particle(
+                    center,
+                    ((x - 200, x + 200), (y - 200, y + 200)),
+                    ((122, 255), (122, 217), (64, 122)),
+                )
                 for _ in range(3)
             )
         center = (
@@ -48,40 +54,16 @@ class Lander(generic.sprite.Sprite):
         # draw particles
         self._particles.draw(window)
 
-        srf = pygame.Surface(self._size)
-        srf.set_colorkey((0, 0, 0))
-        srf.blit(self._texture, (0, 0))
-        # pygame.draw.rect(srf, self._colour, ((0, 0), self._size))
-
         center = (
             self._position[0] + self._size[0] / 2,
             self._position[1] + self._size[1] / 2,
         )
 
-        # rotate and calculate correction for position
-        srf = pygame.transform.rotate(srf, self._angle)
-        _, _, w, h, = srf.get_rect()
-        dx = int(w / 2) - int(self._size[0] / 2)
-        dy = int(h / 2) - int(self._size[1] / 2)
-
-        # corrected position
-        px = self._position[0] - dx
-        py = self._position[1] - dy
-        # draw on window surface
-        window.blit(srf, (px, py))
-
-        # debug info
         # thrust vector
         x = center[0] + math.sin(math.radians(self._angle)) * -100
         y = center[1] + math.cos(math.radians(self._angle)) * -100
         pygame.draw.line(window, (255, 255, 255), center, (x, y))
-
-        # linear_v vector
-        pygame.draw.line(window, (255, 255, 255), center, (x, y))
-        vx, vy = self._linear_v
-        x = vx + center[0]
-        y = vy + center[1]
-        pygame.draw.line(window, (0xBE, 0xDE, 0xAD), center, (x, y))
+        super().draw(window)
 
     def enable_thrust(self, accel):
         self.thrusting = True
