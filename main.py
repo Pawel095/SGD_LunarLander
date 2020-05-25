@@ -14,7 +14,9 @@ Loader().load()
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 pygame.display.set_caption("Lunar Lander")
 
-lander = Shuttle(assets["lander"],Moon(40))
+moon = Moon(1, (constants.WIDTH / 2, constants.HEIGHT / 2),None)
+
+lander = Shuttle(assets["lander"], moon)
 fps_target = 60
 
 running = True
@@ -47,10 +49,11 @@ while running:
 
     # Physics
     lander.update(deltaT)
+    moon.update(deltaT)
 
     # render
     window.fill((0, 0, 0))
-
+    moon.draw(window)
     lander.draw(window)
 
     pygame.display.update()
