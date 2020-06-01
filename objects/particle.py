@@ -30,12 +30,17 @@ class Particle:
         position=(0, 0),
         speed=((-100, 100), (-100, 100)),
         color_range=((0, 255), (0, 255), (0, 255)),
+        size=((5, 20), (5, 20)),
         ttl=1,
     ):
         self.position = position
         self.speed = (
             random.randrange(speed[0][0], speed[0][1]),
             random.randrange(speed[1][0], speed[1][1]),
+        )
+        self.size = (
+            random.randrange(size[0][0], size[0][1]),
+            random.randrange(size[1][0], size[1][1]),
         )
         self.color = (
             random.randrange(color_range[0][0], color_range[0][1]),
@@ -57,4 +62,4 @@ class Particle:
             return False
 
     def draw(self, window: pygame.Surface):
-        pygame.draw.rect(window, self.color, (self.position, (20, 20)))
+        pygame.draw.rect(window, self.color, (self.position, self.size))

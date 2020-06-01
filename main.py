@@ -3,7 +3,7 @@ import constants
 from loader import Loader, assets
 from timeit import default_timer as time
 from time import sleep
-from generic.worlds import Moon
+from generic.worlds import Planet
 
 from objects.lander import Lander as Shuttle
 
@@ -14,9 +14,9 @@ Loader().load()
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 pygame.display.set_caption("Lunar Lander")
 
-moon = Moon(40, (constants.WIDTH / 2, constants.HEIGHT / 2), None)
+moon = Planet(500000, (300, 300), None)
 
-lander = Shuttle(assets["lander"], moon)
+lander = Shuttle((100, 100 + 26), assets["lander"], moon)
 fps_target = 60
 
 running = True
@@ -48,7 +48,7 @@ while running:
                 lander.angular_a = 0
 
     # Physics
-    lander.update(deltaT)
+    lander.update(deltaT, window)
     moon.update(deltaT)
 
     # render
