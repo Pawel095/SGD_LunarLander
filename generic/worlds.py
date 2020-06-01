@@ -35,8 +35,15 @@ class Planet(generic.sprite.StaticSprite):
         super().draw(window)
 
     def check_if_collides(self, s: generic.sprite.DynamicSprite):
-        x1, y1 = self._position
-        x2, y2 = s.get_self_on_next_iteration()._position
+        future_s = s.get_self_on_next_iteration()
+        x1, y1 = (
+            self._position[0] + self._size[0] / 2,
+            self._position[1] + self._size[1] / 2,
+        )
+        x2, y2 = (
+            future_s._position[0] + future_s._size[0] / 2,
+            future_s._position[1] + future_s._size[1] / 2,
+        )
 
         distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
         distance -= self._collision_radius

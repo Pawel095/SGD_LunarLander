@@ -6,11 +6,12 @@ from objects.particle import Particle, ParticleSystem
 
 class Lander(generic.sprite.DynamicSprite):
     def __init__(self, position, texture, world):
-        self._texture = pygame.transform.rotozoom(texture, 0, 0.25)
+        texture = pygame.transform.rotozoom(texture, 0, 0.25)
         self.thrusting = False
         self._colour = (123, 123, 123)
         self._particles = ParticleSystem()
         self.landed = False
+
         super().__init__(position, texture, world)
 
     def update(self, deltaT, window):
@@ -35,10 +36,6 @@ class Lander(generic.sprite.DynamicSprite):
                 )
                 for _ in range(3)
             )
-        center = (
-            self._position[0] + self._size[0] / 2,
-            self._position[1] + self._size[1] / 2,
-        )
 
         if self._world.check_if_collides(self):
             # check angle of rotation and planets normal

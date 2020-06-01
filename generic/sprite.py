@@ -35,6 +35,7 @@ class DynamicSprite:
     def __init__(self, position, texture: pygame.Surface, world):
         self._world = world
         self.thrusting = False
+        self._texture=texture
 
         self._size = self._texture.get_rect()[2:]
         self._collision_radius = max(self._size) / 2
@@ -84,7 +85,7 @@ class StaticSprite:
         self.thrusting = False
 
         self._size = self._texture.get_rect()[2:]
-        self._collision_radius = max(self._size) / 2
+        self._collision_radius = (max(self._size) / 2)*0.75
         self._position = position
         self._angle = 180
         self._angular_v = 0
