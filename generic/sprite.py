@@ -1,7 +1,5 @@
 import pygame
 import math
-import generic.worlds
-from objects.particle import Particle, ParticleSystem
 
 
 class DynamicSprite:
@@ -24,7 +22,6 @@ class DynamicSprite:
         vx, vy = self._linear_v
         ax, ay = self._world.apply_gravity(self)
 
-        tetha = self._angle
         av = self._angular_v
         aa = self._angular_a
 
@@ -95,7 +92,6 @@ class StaticSprite:
     def update(self, deltaT):
         px, py = self._position
 
-        tetha = self._angle
         av = self._angular_v
         aa = self._angular_a
 
@@ -115,11 +111,6 @@ class StaticSprite:
         srf.set_colorkey((0, 0, 0))
         srf.blit(self._texture, (0, 0))
         # pygame.draw.rect(srf, self._colour, ((0, 0), self._size))
-
-        center = (
-            self._position[0] + self._size[0] / 2,
-            self._position[1] + self._size[1] / 2,
-        )
 
         # rotate and calculate correction for position
         srf = pygame.transform.rotate(srf, self._angle)

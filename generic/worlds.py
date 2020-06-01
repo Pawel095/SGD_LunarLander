@@ -24,5 +24,10 @@ class Moon(generic.sprite.StaticSprite):
         )
         cx, cy = sprite_center
         px, py = planet_center
+        length = math.sqrt((px - cx) ** 2 + (py - cy) ** 2)
+        nx, ny = ((px - cx) / length, (py - cy) / length)
         sx, sy = s._linear_a
-        return (px - cx) * self.gravity + sx, (py - cy) * self.gravity + sy
+        return nx * self.gravity + sx, ny * self.gravity + sy
+
+    def draw(self, window):
+        super().draw(window)
