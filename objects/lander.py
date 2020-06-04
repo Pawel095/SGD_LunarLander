@@ -65,7 +65,7 @@ class Lander(generic.sprite.DynamicSprite):
             # check speed, if less than 100, land
             # else explode
             if angle <= 15 and speed <= 100:
-                pass
+                print("Landing succesfull")
             else:
                 self.exploded = True
                 self._particles.add_particles(
@@ -84,7 +84,6 @@ class Lander(generic.sprite.DynamicSprite):
 
             self._linear_a = (0, 0)
             self._linear_v = (0, 0)
-            pass
         elif self.landed:
             if self.thrusting:
                 self._linear_v = (-thrust_x / 100, -thrust_y / 100)
