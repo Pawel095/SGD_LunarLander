@@ -18,7 +18,7 @@ camera = Camera()
 
 moon = Planet(1000000, (300, 300), None)
 
-lander = Shuttle((100, 100 + 26), assets["lander"], moon)
+lander = Shuttle((100, 100), assets["lander"], moon)
 fps_target = 60
 
 running = True
