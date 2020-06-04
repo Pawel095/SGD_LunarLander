@@ -1,5 +1,4 @@
 import pygame
-from constants import WIDTH, HEIGHT
 import random
 from timeit import default_timer as time
 
@@ -24,7 +23,7 @@ class ParticleSystem:
         return self.particles[item]
 
 
-class Particle:
+class LinearParticle:
     def __init__(
         self,
         position=(0, 0),
@@ -63,3 +62,20 @@ class Particle:
 
     def draw(self, window: pygame.Surface):
         pygame.draw.rect(window, self.color, (self.position, self.size))
+
+
+class AngularParticle(LinearParticle):
+    def __init__(
+        self,
+        position=(0, 0),
+        direction=(1, 0),
+        scatter_angle=10,
+        speed=(10, 20),
+        color_range=((0, 255), (0, 255), (0, 255)),
+        size=((5, 20), (5, 20)),
+        ttl=(1, 2),
+    ):
+        # TODO: policzyć wektor speed tak aby się particlesy w stożku pojawiały
+        super().__init__(
+            position=position, speed=speed, color_range=color_range, size=size, ttl=ttl
+        )

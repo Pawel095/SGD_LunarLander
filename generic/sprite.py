@@ -48,6 +48,7 @@ class DynamicSprite:
         self._angular_v = 0
         self._angular_a = 0
         self._lastDeltaT = 1
+        self._camera = camera.Camera.get_instance()
 
     def update(self, deltaT):
         self._lastDeltaT = deltaT
@@ -76,11 +77,12 @@ class DynamicSprite:
         # corrected position
         px = self._position[0] - dx
         py = self._position[1] - dy
+        px, py = self._camera.get_transform((px, py))
         # draw on window surface
         window.blit(srf, (px, py))
 
 
-class StaticSprite:
+class BackgroundSprite:
     def __init__(self, position, texture: pygame.Surface):
         self.thrusting = False
 
@@ -90,6 +92,7 @@ class StaticSprite:
         self._angle = 180
         self._angular_v = 0
         self._angular_a = 0
+        self._camera = camera.Camera.get_instance()
 
     def update(self, deltaT):
         _angular_update(self, deltaT)
@@ -109,5 +112,6 @@ class StaticSprite:
         # corrected position
         px = self._position[0] - dx
         py = self._position[1] - dy
+        px, py = self._camera.get_transform((px, py))
         # draw on window surface
         window.blit(srf, (px, py))

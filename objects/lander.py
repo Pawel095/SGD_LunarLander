@@ -1,8 +1,7 @@
 import pygame
 import math
 import generic.sprite
-from objects.particle import Particle, ParticleSystem
-from camera import Camera
+from objects.particle import LinearParticle, ParticleSystem
 
 
 class Lander(generic.sprite.DynamicSprite):
@@ -28,10 +27,11 @@ class Lander(generic.sprite.DynamicSprite):
         self._particles.update(deltaT)
 
         if self.thrusting and not self.exploded:
+            camera_transform = self._camera.get_transform(center)
             self._particles.add_particles(
                 [
-                    Particle(
-                        position=center,
+                    LinearParticle(
+                        position=camera_transform,
                         speed=(
                             (thrust_x - 200, thrust_x + 200),
                             (thrust_y - 200, thrust_y + 200),
@@ -68,10 +68,11 @@ class Lander(generic.sprite.DynamicSprite):
                 print("Landing succesfull")
             else:
                 self.exploded = True
+                camera_transform = self._camera.get_transform(center)
                 self._particles.add_particles(
                     [
-                        Particle(
-                            position=center,
+                        LinearParticle(
+                            position=camera_transform,
                             speed=(
                                 (int(px * -150) - 140, int(px * -150) + 140),
                                 (int(py * -150) - 140, int(py * -150) + 140),
@@ -87,6 +88,7 @@ class Lander(generic.sprite.DynamicSprite):
         elif self.landed:
             if self.thrusting:
                 self._linear_v = (-thrust_x / 100, -thrust_y / 100)
+                self._angular_a = 0
                 super().update(deltaT)
                 self.landed = False
         else:
@@ -107,11 +109,16 @@ class Lander(generic.sprite.DynamicSprite):
             # linear_v vector
             x = center[0] + math.sin(math.radians(self._angle)) * 100
             y = center[1] + math.cos(math.radians(self._angle)) * 100
-            pygame.draw.line(window, (255, 255, 255), center, (x, y))
+            center_transform = self._camera.get_transform(center)
+            x, y = self._camera.get_transform((x, y))
+            pygame.draw.line(window, (255, 255, 255), center_transform, (x, y))
+
+            # acceletarion vector
             vx, vy = self._linear_v
             x = vx + center[0]
             y = vy + center[1]
-            pygame.draw.line(window, (0xBE, 0xDE, 0xAD), center, (x, y))
+            x, y = self._camera.get_transform((x, y))
+            pygame.draw.line(window, (0xBE, 0xDE, 0xAD), center_transform, (x, y))
             super().draw(window)
 
     def main_thruster(self, accel):

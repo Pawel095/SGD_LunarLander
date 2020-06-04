@@ -3,7 +3,7 @@ import pygame
 import math
 
 
-class Planet(generic.sprite.StaticSprite):
+class Planet(generic.sprite.BackgroundSprite):
     def __init__(self, gravity, position, texture):
         self.gravity = gravity
         if texture is None:

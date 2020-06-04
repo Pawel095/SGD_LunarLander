@@ -3,7 +3,7 @@ import constants
 from loader import Loader, assets
 from timeit import default_timer as time
 from time import sleep
-from camera import Camera
+from camera import Camera, simple_follow
 from generic.worlds import Planet
 from objects.lander import Lander as Shuttle
 
@@ -14,7 +14,7 @@ Loader().load()
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 pygame.display.set_caption("Lunar Lander")
 
-camera = Camera()
+camera = Camera(simple_follow, 5000, 5000)
 
 moon = Planet(1000000, (300, 300), None)
 
@@ -52,6 +52,9 @@ while running:
     # Physics
     lander.update(deltaT)
     moon.update(deltaT)
+
+    # camera
+    camera.update(lander)
 
     # render
     window.fill((0, 0, 0))
