@@ -31,23 +31,23 @@ class Particle:
         speed=((-100, 100), (-100, 100)),
         color_range=((0, 255), (0, 255), (0, 255)),
         size=((5, 20), (5, 20)),
-        ttl=1,
+        ttl=(1, 2),
     ):
         self.position = position
         self.speed = (
-            random.randrange(speed[0][0], speed[0][1]),
-            random.randrange(speed[1][0], speed[1][1]),
+            random.uniform(speed[0][0], speed[0][1]),
+            random.uniform(speed[1][0], speed[1][1]),
         )
         self.size = (
-            random.randrange(size[0][0], size[0][1]),
-            random.randrange(size[1][0], size[1][1]),
+            random.uniform(size[0][0], size[0][1]),
+            random.uniform(size[1][0], size[1][1]),
         )
         self.color = (
-            random.randrange(color_range[0][0], color_range[0][1]),
-            random.randrange(color_range[1][0], color_range[1][1]),
-            random.randrange(color_range[2][0], color_range[2][1]),
+            random.uniform(color_range[0][0], color_range[0][1]),
+            random.uniform(color_range[1][0], color_range[1][1]),
+            random.uniform(color_range[2][0], color_range[2][1]),
         )
-        self.ttl = ttl
+        self.ttl = random.uniform(ttl[0], ttl[1])
         self.start = time()
 
     def update(self, deltaT):

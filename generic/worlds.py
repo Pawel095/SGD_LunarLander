@@ -50,7 +50,7 @@ class Planet(generic.sprite.StaticSprite):
         distance -= s._collision_radius
         return distance <= 0
 
-    def get_normal_vector(self, outside_point, window):
+    def get_normal_vector(self, outside_point):
         planet_center = (
             self._position[0] + self._size[0] / 2,
             self._position[1] + self._size[1] / 2,

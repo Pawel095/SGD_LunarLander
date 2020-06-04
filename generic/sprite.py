@@ -1,6 +1,6 @@
 import pygame
-import math
 import copy
+import camera
 
 
 def _linear_update(self, deltaT):
@@ -35,7 +35,7 @@ class DynamicSprite:
     def __init__(self, position, texture: pygame.Surface, world):
         self._world = world
         self.thrusting = False
-        self._texture=texture
+        self._texture = texture
 
         self._size = self._texture.get_rect()[2:]
         self._collision_radius = max(self._size) / 2
@@ -85,28 +85,14 @@ class StaticSprite:
         self.thrusting = False
 
         self._size = self._texture.get_rect()[2:]
-        self._collision_radius = (max(self._size) / 2)*0.75
+        self._collision_radius = (max(self._size) / 2) * 0.75
         self._position = position
         self._angle = 180
         self._angular_v = 0
         self._angular_a = 0
 
     def update(self, deltaT):
-        px, py = self._position
-
-        av = self._angular_v
-        aa = self._angular_a
-
-        # angular calculation
-        self._angular_v = av + aa * deltaT
-
-        self._angle = self._angle + av * deltaT + 0.5 * aa * deltaT ** 2
-
-        if self._angle < 0:
-            self._angle = 360
-
-        if self._angle > 360:
-            self._angle %= 360
+        _angular_update(self, deltaT)
 
     def draw(self, window: pygame.Surface):
         srf = pygame.Surface(self._size)

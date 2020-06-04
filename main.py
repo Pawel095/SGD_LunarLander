@@ -3,8 +3,8 @@ import constants
 from loader import Loader, assets
 from timeit import default_timer as time
 from time import sleep
+from camera import Camera
 from generic.worlds import Planet
-
 from objects.lander import Lander as Shuttle
 
 pygame.init()
@@ -13,6 +13,8 @@ Loader().load()
 
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 pygame.display.set_caption("Lunar Lander")
+
+camera = Camera()
 
 moon = Planet(1000000, (300, 300), None)
 
@@ -31,24 +33,24 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                lander.enable_thrust(1000)
+                lander.main_thruster(1000)
 
             if event.key == pygame.K_d:
-                lander.angular_a = -200
+                lander.rcs(-200)
             if event.key == pygame.K_a:
-                lander.angular_a = 200
+                lander.rcs(200)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
-                lander.disable_thrust()
+                lander.disable_main_thruster()
 
             if event.key == pygame.K_d:
-                lander.angular_a = 0
+                lander.disable_rcs()
             if event.key == pygame.K_a:
-                lander.angular_a = 0
+                lander.disable_rcs()
 
     # Physics
-    lander.update(deltaT, window)
+    lander.update(deltaT)
     moon.update(deltaT)
 
     # render
