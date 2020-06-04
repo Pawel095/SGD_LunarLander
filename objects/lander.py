@@ -1,7 +1,7 @@
 import pygame
 import math
 import generic.sprite
-from objects.particle import LinearParticle, ParticleSystem
+from objects.particle import LinearParticle, AngularParticle, ParticleSystem
 
 
 class Lander(generic.sprite.DynamicSprite):
@@ -69,15 +69,16 @@ class Lander(generic.sprite.DynamicSprite):
             else:
                 self.exploded = True
                 camera_transform = self._camera.get_transform(center)
+                x, y = self._world.get_normal_vector(self._position)
+                angle = math.degrees(math.atan2(y, x))
+                angle += 180
+                print(angle)
                 self._particles.add_particles(
                     [
-                        LinearParticle(
+                        AngularParticle(
                             position=camera_transform,
-                            speed=(
-                                (int(px * -150) - 140, int(px * -150) + 140),
-                                (int(py * -150) - 140, int(py * -150) + 140),
-                            ),
-                            ttl=(3, 7),
+                            angle=(angle - 10, angle + 10),
+                            speed=(100, 200),
                         )
                         for _ in range(300)
                     ]

@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 from timeit import default_timer as time
 
 
@@ -68,14 +69,22 @@ class AngularParticle(LinearParticle):
     def __init__(
         self,
         position=(0, 0),
-        direction=(1, 0),
-        scatter_angle=10,
+        angle=(0, 359),
         speed=(10, 20),
         color_range=((0, 255), (0, 255), (0, 255)),
         size=((5, 20), (5, 20)),
         ttl=(1, 2),
     ):
-        # TODO: policzyć wektor speed tak aby się particlesy w stożku pojawiały
+        # unit vector
+        ux = math.sin(math.radians(random.uniform(angle[0], angle[1])))
+        uy = math.cos(math.radians(random.uniform(angle[0], angle[1])))
+        newSpeed = random.uniform(speed[0], speed[1])
+        ux *= newSpeed
+        uy *= newSpeed
         super().__init__(
-            position=position, speed=speed, color_range=color_range, size=size, ttl=ttl
+            position=position,
+            speed=((ux - newSpeed, ux + newSpeed), (uy - newSpeed, uy + newSpeed)),
+            color_range=color_range,
+            size=size,
+            ttl=ttl,
         )
