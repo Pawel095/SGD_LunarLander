@@ -4,7 +4,7 @@ from loader import Loader, assets
 from timeit import default_timer as time
 from time import sleep
 from camera import Camera, simple_follow
-from generic.worlds import Planet
+from generic.worlds import Planet, Planets
 from objects.lander import Lander as Shuttle
 
 pygame.init()
@@ -17,8 +17,12 @@ pygame.display.set_caption("Lunar Lander")
 camera = Camera(simple_follow, 5000, 5000)
 
 moon = Planet(1000000, (300, 300), None)
+planets = Planets([1000000, 1000000], ((100, 100), (300, 100)), [None, None])
 
-lander = Shuttle((100, 100), assets["lander"], moon)
+lander = Shuttle((10, 10), assets["lander"], planets)
+
+planets.apply_gravity(lander)
+
 fps_target = 60
 
 running = True
@@ -51,14 +55,16 @@ while running:
 
     # Physics
     lander.update(deltaT)
-    moon.update(deltaT)
+    planets.update(deltaT)
+    # moon.update(deltaT)
 
     # camera
     camera.update(lander)
 
     # render
     window.fill((0, 0, 0))
-    moon.draw(window)
+    # moon.draw(window)
+    planets.draw(window)
     lander.draw(window)
 
     pygame.display.update()

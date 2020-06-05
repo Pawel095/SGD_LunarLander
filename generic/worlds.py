@@ -3,6 +3,53 @@ import pygame
 import math
 
 
+class Planets:
+    def __init__(self, gravities, positions, textures):
+        self.sprites = []
+        for i, p in enumerate(positions):
+            self.sprites.append(Planet(gravities[i], p, textures[i]))
+
+    def apply_gravity(self, s: generic.sprite.DynamicSprite):
+        gravity_vector = [0, 0]
+        # odjąć sx*planets i sy*planets
+        for p in self.sprites:
+            v = p.apply_gravity(s)
+            gravity_vector = [
+                gravity_vector[0] + v[0] - s._linear_a[0],
+                gravity_vector[1] + v[1] - s._linear_a[1],
+            ]
+        gravity_vector[0] += s._linear_a[0]
+        gravity_vector[1] += s._linear_a[1]
+        return gravity_vector
+
+    def update(self, deltaT):
+        for p in self.sprites:
+            p.update(deltaT)
+
+    def draw(self, window):
+        for p in self.sprites:
+            p.draw(window)
+
+    def __get_nearest(self, s: generic.sprite.DynamicSprite):
+        min_distance = (None, 999999999999999999999999999999999999999)
+        for p in self.sprites:
+            sx, sy = s._position
+            px, py = p._position
+            distance = math.sqrt((sx - px) ** 2 + (sy - py) ** 2)
+
+            if min_distance[1] >= distance:
+                min_distance = (p, distance)
+        return min_distance
+
+    def check_if_collides(self, s: generic.sprite.DynamicSprite):
+        p, _ = self.__get_nearest(s)
+        return p.check_if_collides(s)
+
+    def get_normal_vector(self, s: generic.sprite.DynamicSprite):
+        p, _ = self.__get_nearest(s)
+        return p.get_normal_vector(s._position)
+
+
 class Planet(generic.sprite.BackgroundSprite):
     def __init__(self, gravity, position, texture):
         self.gravity = gravity
@@ -24,11 +71,12 @@ class Planet(generic.sprite.BackgroundSprite):
         cx, cy = sprite_center
         px, py = planet_center
         length = math.sqrt((px - cx) ** 2 + (py - cy) ** 2)
+        length += 0.00000000000001
         nx, ny = ((px - cx) / length, (py - cy) / length)
         sx, sy = s._linear_a
         return (
-            (nx * self.gravity) / length ** 2 + sx,
-            (ny * self.gravity) / length ** 2 + sy,
+            ((nx * self.gravity) / length ** 2) + sx,
+            ((ny * self.gravity) / length ** 2) + sy,
         )
 
     def draw(self, window):

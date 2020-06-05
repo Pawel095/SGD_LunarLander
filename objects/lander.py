@@ -48,7 +48,7 @@ class Lander(generic.sprite.DynamicSprite):
                 self._position[0] + self._size[0] / 2,
                 self._position[1] + self._size[1] / 2,
             )
-            px, py = self._world.get_normal_vector(center)
+            px, py = self._world.get_normal_vector(self)
             cx = math.sin(math.radians(self._angle))
             cy = math.cos(math.radians(self._angle))
 
@@ -69,7 +69,7 @@ class Lander(generic.sprite.DynamicSprite):
             else:
                 self.exploded = True
                 camera_transform = self._camera.get_transform(center)
-                x, y = self._world.get_normal_vector(self._position)
+                x, y = self._world.get_normal_vector(self)
                 angle = math.degrees(math.atan2(y, x))
                 angle += 180
                 print(angle)
