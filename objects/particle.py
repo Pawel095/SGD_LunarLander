@@ -83,7 +83,7 @@ class AngularParticle(LinearParticle):
         uy *= newSpeed
         super().__init__(
             position=position,
-            speed=((ux - newSpeed, ux + newSpeed), (uy - newSpeed, uy + newSpeed)),
+            speed=((ux - 100, ux + 100), (uy - 100, uy + 100)),
             color_range=color_range,
             size=size,
             ttl=ttl,
